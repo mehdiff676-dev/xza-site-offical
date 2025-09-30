@@ -566,16 +566,16 @@
             </div>
         </div>
         
-        <!-- قسم إدخال Access Token -->
+        <!-- قسم إدخال JWT Token -->
         <div class="section token-section">
             <div class="section-title">
                 <i class="fas fa-key"></i>
-                <h2>إدخال Access Token</h2>
+                <h2>إدخال JWT Token</h2>
             </div>
             <div class="input-group">
-                <label for="access-token">Access Token</label>
-                <input type="text" id="access-token" placeholder="أدخل Access Token الخاص بك">
-                <div class="info-text">Access Token هو المفتاح الرئيسي للوصول إلى خدماتنا</div>
+                <label for="jwt-token">JWT Token</label>
+                <input type="text" id="jwt-token" placeholder="أدخل JWT Token الخاص بك">
+                <div class="info-text">JWT Token هو المفتاح الرئيسي للوصول إلى خدماتنا</div>
             </div>
             <button class="btn btn-secondary" id="save-token-btn">
                 <i class="fas fa-save"></i>
@@ -732,37 +732,37 @@
         
         createParticles();
         
-        // حفظ Access Token
+        // حفظ JWT Token
         document.getElementById('save-token-btn').addEventListener('click', function() {
-            const accessToken = document.getElementById('access-token').value;
+            const jwtToken = document.getElementById('jwt-token').value;
             const messageEl = document.getElementById('token-message');
             
-            if (!accessToken) {
-                showMessage(messageEl, 'error', 'يرجى إدخال Access Token');
+            if (!jwtToken) {
+                showMessage(messageEl, 'error', 'يرجى إدخال JWT Token');
                 return;
             }
             
             // حفظ Token في localStorage
-            localStorage.setItem('xza_access_token', accessToken);
-            showMessage(messageEl, 'success', 'تم حفظ Access Token بنجاح!');
+            localStorage.setItem('xza_jwt_token', jwtToken);
+            showMessage(messageEl, 'success', 'تم حفظ JWT Token بنجاح!');
         });
         
         // تحميل Token المحفوظ عند فتح الصفحة
         document.addEventListener('DOMContentLoaded', function() {
-            const savedToken = localStorage.getItem('xza_access_token');
+            const savedToken = localStorage.getItem('xza_jwt_token');
             if (savedToken) {
-                document.getElementById('access-token').value = savedToken;
+                document.getElementById('jwt-token').value = savedToken;
             }
         });
         
         // وظائف النماذج
         document.getElementById('send-item-btn').addEventListener('click', async function() {
-            const accessToken = document.getElementById('access-token').value;
+            const jwtToken = document.getElementById('jwt-token').value;
             const itemIds = document.getElementById('item-ids').value;
             const messageEl = document.getElementById('item-message');
             
-            if (!accessToken) {
-                showMessage(messageEl, 'error', 'يرجى إدخال Access Token أولاً');
+            if (!jwtToken) {
+                showMessage(messageEl, 'error', 'يرجى إدخال JWT Token أولاً');
                 return;
             }
             
@@ -775,19 +775,26 @@
             showMessage(messageEl, 'success', 'جارٍ إرسال العناصر...');
             
             try {
-                // بناء رابط API لإرسال العناصر
-                const apiUrl = `https://xza-add-itemss.onrender.com/send_items?access=${encodeURIComponent(accessToken)}&item_ids=${encodeURIComponent(itemIds)}`;
+                // تقسيم معرفات العناصر إلى مصفوفة
+                const itemIdsArray = itemIds.split(',').map(id => id.trim()).filter(id => id);
                 
-                // إرسال الطلب الفعلي
-                const response = await fetch(apiUrl);
-                
-                if (response.ok) {
+                // إرسال كل عنصر على حدة
+                for (const itemId of itemIdsArray) {
+                    // بناء رابط API الجديد لإرسال العناصر
+                    const apiUrl = `https://xza-add-items-pro.vercel.app/send_item?item_id=${encodeURIComponent(itemId)}&jwt_token=${encodeURIComponent(jwtToken)}`;
+                    
+                    // إرسال الطلب الفعلي
+                    const response = await fetch(apiUrl);
+                    
+                    if (!response.ok) {
+                        throw new Error(`فشل في إرسال العنصر ${itemId}`);
+                    }
+                    
                     const result = await response.json();
-                    showMessage(messageEl, 'success', 'تم إرسال العناصر بنجاح!');
-                    console.log('API Response:', result);
-                } else {
-                    throw new Error('فشل في إرسال العناصر');
+                    console.log(`API Response for item ${itemId}:`, result);
                 }
+                
+                showMessage(messageEl, 'success', `تم إرسال ${itemIdsArray.length} عنصر بنجاح!`);
             } catch (error) {
                 console.error('Error sending items:', error);
                 showMessage(messageEl, 'error', 'حدث خطأ أثناء إرسال العناصر: ' + error.message);
@@ -795,12 +802,12 @@
         });
         
         document.getElementById('change-bio-btn').addEventListener('click', async function() {
-            const accessToken = document.getElementById('access-token').value;
+            const jwtToken = document.getElementById('jwt-token').value;
             const newBio = document.getElementById('new-bio').value;
             const messageEl = document.getElementById('bio-message');
             
-            if (!accessToken) {
-                showMessage(messageEl, 'error', 'يرجى إدخال Access Token أولاً');
+            if (!jwtToken) {
+                showMessage(messageEl, 'error', 'يرجى إدخال JWT Token أولاً');
                 return;
             }
             
@@ -813,8 +820,8 @@
             showMessage(messageEl, 'success', 'جارٍ تغيير البايو...');
             
             try {
-                // بناء رابط API لتغيير البايو
-                const apiUrl = `https://change-bio-xza.vercel.app/get?access=${encodeURIComponent(accessToken)}&text=${encodeURIComponent(newBio)}`;
+                // بناء رابط API لتغيير البايو باستخدام JWT Token
+                const apiUrl = `https://change-xza-bio.vercel.app/chnage?jwt_token=${encodeURIComponent(jwtToken)}&text=${encodeURIComponent(newBio)}`;
                 
                 // إرسال الطلب الفعلي
                 const response = await fetch(apiUrl);
