@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XZA TEAM Comenity - OB50</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #000;
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+            direction: rtl;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        #matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(10, 15, 30, 0.85);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            position: relative;
+            z-index: 1;
+            animation: glow 3s infinite alternate;
+        }
+        
+        @keyframes glow {
+            0% {
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            }
+            100% {
+                box-shadow: 0 0 30px rgba(255, 215, 0, 0.6), 0 0 40px rgba(255, 140, 0, 0.3);
+            }
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 25px;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+            position: relative;
+        }
+        
+        .logo {
+            font-size: 3.5rem;
+            color: #ffcc00;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.7);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            background: linear-gradient(to right, #ffcc00, #ff9900);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(255, 153, 0, 0.5);
+        }
+        
+        .subtitle {
+            color: #aaa;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+        }
+        
+        .version-badge {
+            display: inline-block;
+            background: linear-gradient(to right, #ff3366, #ff6633);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(255, 51, 102, 0.5);
+        }
+        
+        .sections-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .section {
+            flex: 1;
+            min-width: 300px;
+            margin-bottom: 20px;
+            padding: 25px;
+            background: linear-gradient(145deg, rgba(30, 35, 50, 0.8), rgba(20, 25, 40, 0.9));
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, #ffcc00, #ff9900);
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            color: #ffcc00;
+            font-size: 1.5rem;
+        }
+        
+        .section-title i {
+            margin-left: 12px;
+            font-size: 1.8rem;
+            text-shadow: 0 0 8px rgba(255, 204, 0, 0.7);
+        }
+        
+        .input-group {
+            margin-bottom: 22px;
+            position: relative;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #ddd;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 10px;
+            border: 2px solid #444;
+            background-color: rgba(20, 25, 40, 0.8);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #ffcc00;
+            background-color: rgba(30, 35, 50, 0.9);
+            box-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+        }
+        
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(to right, #ffcc00, #ff9900);
+            color: #222;
+            box-shadow: 0 5px 15px rgba(255, 153, 0, 0.4);
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(to right, #ff9900, #ff6600);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 153, 0, 0.6);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(to right, #4a90e2, #357abd);
+            color: white;
+            box-shadow: 0 5px 15px rgba(53, 122, 189, 0.4);
+        }
+        
+        .btn-secondary:hover {
+            background: linear-gradient(to right, #357abd, #2a5f9e);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(53, 122, 189, 0.6);
+        }
+        
+        .message {
+            margin-top: 18px;
+            padding: 14px;
+            border-radius: 10px;
+            text-align: center;
+            display: none;
+            font-weight: 600;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .success {
+            background-color: rgba(46, 204, 113, 0.2);
+            border: 1px solid #2ecc71;
+            color: #2ecc71;
+            box-shadow: 0 0 10px rgba(46, 204, 113, 0.3);
+        }
+        
+        .error {
+            background-color: rgba(231, 76, 60, 0.2);
+            border: 1px solid #e74c3c;
+            color: #e74c3c;
+            box-shadow: 0 0 10px rgba(231, 76, 60, 0.3);
+        }
+        
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            background: rgba(255, 215, 0, 0.7);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .info-text {
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-top: 8px;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 6px;
+            border-right: 3px solid #ffcc00;
+        }
+        
+        .features {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 30px 0;
+            gap: 15px;
+        }
+        
+        .feature {
+            text-align: center;
+            padding: 15px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            flex: 1;
+            min-width: 150px;
+        }
+        
+        .feature i {
+            font-size: 2rem;
+            color: #ffcc00;
+            margin-bottom: 10px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 215, 0, 0.2);
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        .team-name {
+            color: #ffcc00;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            .sections-container {
+                flex-direction: column;
+            }
+            
+            .features {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="matrix-bg"></canvas>
+    <div class="particles" id="particles-container"></div>
+    
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-fire"></i>
+            </div>
+            <h1>XZA TEAM Comenity</h1>
+            <p class="subtitle">تم تطوير الأداة بواسطة فريق <span class="team-name">XZA</span></p>
+            <div class="version-badge">OB50 - الإصدار المحدث</div>
+        </header>
+        
+        <div class="features">
+            <div class="feature">
+                <i class="fas fa-bolt"></i>
+                <p>سرعة فائقة</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-shield-alt"></i>
+                <p>آمن ومحمي</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-sync"></i>
+                <p>تحديثات مستمرة</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-headset"></i>
+                <p>دعم فني</p>
+            </div>
+        </div>
+        
+        <div class="sections-container">
+            <div class="section">
+                <div class="section-title">
+                    <i class="fas fa-paper-plane"></i>
+                    <h2>إرسال العنصر</h2>
+                </div>
+                <div class="input-group">
+                    <label for="jwt-token">JWT Token</label>
+                    <input type="text" id="jwt-token" placeholder="أدخل JWT Token الخاص بك">
+                </div>
+                <div class="input-group">
+                    <label for="item-ids">معرفات العناصر (Item IDs)</label>
+                    <input type="text" id="item-ids" placeholder="أدخل معرفات العناصر مفصولة بفاصلة (مثال: ID1,ID2,ID3)">
+                    <div class="info-text">يمكنك إدخال عدة عناصر بفصلها بفاصلة</div>
+                </div>
+                <button class="btn btn-primary" id="send-item-btn">
+                    <i class="fas fa-paper-plane"></i>
+                    إرسال العنصر إلى الحساب
+                </button>
+                <div id="item-message" class="message"></div>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">
+                    <i class="fas fa-user-edit"></i>
+                    <h2>تغيير البايو</h2>
+                </div>
+                <div class="input-group">
+                    <label for="bio-jwt-token">JWT Token</label>
+                    <input type="text" id="bio-jwt-token" placeholder="أدخل JWT Token الخاص بك">
+                </div>
+                <div class="input-group">
+                    <label for="new-bio">البايو الجديد</label>
+                    <textarea id="new-bio" rows="4" placeholder="أدخل البايو الجديد"></textarea>
+                </div>
+                <button class="btn btn-secondary" id="change-bio-btn">
+                    <i class="fas fa-sync-alt"></i>
+                    تغيير البايو
+                </button>
+                <div id="bio-message" class="message"></div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>XZA TEAM Comenity &copy; 2023 - جميع الحقوق محفوظة</p>
+            <p>تم التطوير خصيصًا لإصدار OB50 من فري فاير</p>
+        </footer>
+    </div>
+
+    <script>
+        // تأثير Matrix في الخلفية
+        const canvas = document.getElementById('matrix-bg');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const arabicChars = 'ضصثقفغعهخحجدشسيبلاتنمكطئءؤرلاىةوزظذ';
+        const chars = arabicChars.split('');
+        
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        
+        const drops = [];
+        for (let x = 0; x < columns; x++) {
+            drops[x] = 1;
+        }
+        
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#0F0';
+            ctx.font = fontSize + 'px arial';
+            
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                
+                drops[i]++;
+            }
+        }
+        
+        setInterval(drawMatrix, 35);
+        
+        // تأثير الجسيمات العائمة
+        function createParticles() {
+            const container = document.getElementById('particles-container');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                const size = Math.random() * 10 + 5;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.animationDuration = `${Math.random() * 20 + 10}s`;
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                
+                container.appendChild(particle);
+            }
+        }
+        
+        createParticles();
+        
+        // وظائف النماذج
+        document.getElementById('send-item-btn').addEventListener('click', async function() {
+            const jwtToken = document.getElementById('jwt-token').value;
+            const itemIds = document.getElementById('item-ids').value;
+            const messageEl = document.getElementById('item-message');
+            
+            if (!jwtToken || !itemIds) {
+                showMessage(messageEl, 'error', 'يرجى ملء جميع الحقول المطلوبة');
+                return;
+            }
+            
+            // إرسال العناصر إلى API
+            showMessage(messageEl, 'success', 'جارٍ إرسال العناصر...');
+            
+            try {
+                // بناء رابط API لإرسال العناصر
+                const apiUrl = `https://xza-add-itemss.onrender.com/send_items?access=${encodeURIComponent(jwtToken)}&item_ids=${encodeURIComponent(itemIds)}`;
+                
+                // إرسال الطلب الفعلي
+                const response = await fetch(apiUrl);
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    showMessage(messageEl, 'success', 'تم إرسال العناصر بنجاح!');
+                    console.log('API Response:', result);
+                } else {
+                    throw new Error('فشل في إرسال العناصر');
+                }
+            } catch (error) {
+                console.error('Error sending items:', error);
+                showMessage(messageEl, 'error', 'حدث خطأ أثناء إرسال العناصر: ' + error.message);
+            }
+        });
+        
+        document.getElementById('change-bio-btn').addEventListener('click', async function() {
+            const jwtToken = document.getElementById('bio-jwt-token').value;
+            const newBio = document.getElementById('new-bio').value;
+            const messageEl = document.getElementById('bio-message');
+            
+            if (!jwtToken || !newBio) {
+                showMessage(messageEl, 'error', 'يرجى ملء جميع الحقول المطلوبة');
+                return;
+            }
+            
+            // إرسال طلب تغيير البايو
+            showMessage(messageEl, 'success', 'جارٍ تغيير البايو...');
+            
+            try {
+                // بناء رابط API لتغيير البايو
+                const apiUrl = `https://change-bio-xza.vercel.app/get?access=${encodeURIComponent(jwtToken)}&text=${encodeURIComponent(newBio)}`;
+                
+                // إرسال الطلب الفعلي
+                const response = await fetch(apiUrl);
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    showMessage(messageEl, 'success', 'تم تغيير البايو بنجاح!');
+                    console.log('API Response:', result);
+                } else {
+                    throw new Error('فشل في تغيير البايو');
+                }
+            } catch (error) {
+                console.error('Error changing bio:', error);
+                showMessage(messageEl, 'error', 'حدث خطأ أثناء تغيير البايو: ' + error.message);
+            }
+        });
+        
+        function showMessage(element, type, text) {
+            element.textContent = text;
+            element.className = 'message ' + type;
+            element.style.display = 'block';
+            
+            setTimeout(() => {
+                element.style.display = 'none';
+            }, 5000);
+        }
+        
+        // تعديل حجم canvas عند تغيير حجم النافذة
+        window.addEventListener('resize', function() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+        
+        // تأثير كتابة للنص الترحيبي
+        document.addEventListener('DOMContentLoaded', function() {
+            const subtitle = document.querySelector('.subtitle');
+            const text = subtitle.textContent;
+            subtitle.textContent = '';
+            
+            let i = 0;
+            const typeWriter = () => {
+                if (i < text.length) {
+                    subtitle.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 100);
+                }
+            };
+            
+            setTimeout(typeWriter, 1000);
+        });
+    </script>
+</body>
+</html>
